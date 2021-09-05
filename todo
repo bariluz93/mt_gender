@@ -1,0 +1,5 @@
+running python load_alignments.py --ds=../data/aggregates/en_anti.txt  --bi=../translations/nematus/en-ru-debiased.txt --align=forward.en-ru-debiased.align --lang=ru --out=../data/human/nematus/ru/ru-.pred.csv
+*******************
+./../scripts/evaluate_language.sh: line 48: running python load_alignments.py --ds=${dataset}  --bi=${$trans_fn_non_debiased} --align=${$align_fn_non_debiased} --lang=${lang} --out=${$out_fn_non_debiased}: bad substitution
+
+--ds=../data/aggregates/en_anti.txt  --bi=../translations/nematus/en-ru-debiased.txt --align=forward.en-ru-debiased.align --lang=ru --out=../data/human/nematus/ru/ru-.pred.csv
