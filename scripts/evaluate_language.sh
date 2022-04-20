@@ -12,9 +12,11 @@ set -e
 dataset=$1
 lang=$2
 trans_sys=$3
+debias_method=$4
 prefix=en-$lang
-prefix_debiased=$prefix-debiased
-prefix_non_debiased=$prefix-non-debiased
+prefix_debiased=$prefix-debiased-$debias_method
+prefix_non_debiased=$prefix-non-debiased-$debias_method
+
 
 # Prepare files for translation
 #cut -f3 $dataset > ./tmp.in            # Extract sentences
@@ -44,10 +46,12 @@ mkdir -p ../data/human/$trans_sys/$lang/
 out_fn_debiased=../data/human/$trans_sys/$lang/${lang}-debiased.pred.csv
 out_fn_non_debiased=../data/human/$trans_sys/$lang/${lang}-non_debiased.pred.csv
 echo "output path: ${out_fn_debiased}"
+echo "python load_alignments.py --ds=$dataset  --bi=$trans_fn_debiased --align=$align_fn_debiased --lang=$lang --out=$out_fn_debiased"
+echo "python load_alignments.py --ds=$dataset  --bi=$trans_fn_non_debiased --align=$align_fn_non_debiased --lang=$lang --out=$out_fn_non_debiased"
+echo "********************debiased results********************"
 python load_alignments.py --ds=$dataset  --bi=$trans_fn_debiased --align=$align_fn_debiased --lang=$lang --out=$out_fn_debiased
-echo "********************finished load_alignments for debiased********************"
+echo "********************non debiased results********************"
 python load_alignments.py --ds=$dataset  --bi=$trans_fn_non_debiased --align=$align_fn_non_debiased --lang=$lang --out=$out_fn_non_debiased
-echo "********************finished load_alignments for non debiased********************"
 
 # Prepare files for human annots
 # human_fn=../data/human/$trans_sys/$lang/${lang}.in.csv

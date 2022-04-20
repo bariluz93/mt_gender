@@ -153,7 +153,6 @@ if __name__ == "__main__":
         logging.basicConfig(level = logging.DEBUG)
     else:
         logging.basicConfig(level = logging.INFO)
-
     gender_predictor = LANGAUGE_PREDICTOR[lang]()
 
     ds = [line.strip().split("\t") for line in open(ds_fn, encoding = "utf8")]

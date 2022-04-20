@@ -111,3 +111,6 @@ translations/
 *.align
 api_key.txt
 *tmp*
+mt_gender_env*
+czech-morfflex-pdt-161115*
+data/aggregates/*
