@@ -6,10 +6,10 @@ from nematus.consts import get_evaluate_translation_files
 import argparse
 def evaluate_translation():
     # refs = []
-    with open(TRANSLATED_DEBIASED_PICKLE, 'rb') as d, open(TRANSLATED_NON_DEBIASED_PICKLE, 'rb') as nd, open(
-            BLEU_GOLD_DATA_FILTERED, 'r') as g:
-        sys_debiased = pickle.load(d)
-        sys_non_debiased = pickle.load(nd)
+    with open(TRANSLATED_DEBIASED, 'r') as d, open(TRANSLATED_NON_DEBIASED, 'r') as nd, open(
+            BLEU_GOLD_DATA, 'r') as g:
+        sys_debiased = d.readlines()
+        sys_non_debiased = nd.readlines()
         refs = g.readlines()
         # refs.append(pickle.load(nd))
     bleu = BLEU()
@@ -18,12 +18,6 @@ def evaluate_translation():
     print("non debiased")
     print(bleu.corpus_score(sys_non_debiased, [refs]))
 
-    # print("debised")
-    # print(bleu.corpus_score(['eine gute Idee , vorausgesetzt , dass es wird , wird diesmal realistisch . \n'],
-    #                         [['eine gute Idee , unter der Voraussetzung , dass sie diesmal in die Tat umgesetzt wird .\n']]))
-    # print("non debised")
-    # print(bleu.corpus_score(['eine gute Idee , vorausgesetzt , sie wird sich diesmal als realistisch erweisen . \n'],
-    #                         [['eine gute Idee , unter der Voraussetzung , dass sie diesmal in die Tat umgesetzt wird .\n']]))
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
@@ -35,7 +29,6 @@ if __name__ == '__main__':
                  "collect_embedding_table= run translate to collect embedding table or not\n"
                  "print_line_nums= whether to print line numbers to output file in translate")
     args = parser.parse_args()
-    _, _, _, _, TRANSLATED_DEBIASED_PICKLE, TRANSLATED_NON_DEBIASED_PICKLE, \
-    BLEU_GOLD_DATA_FILTERED = get_evaluate_translation_files(args.config_str)
+    BLEU_SOURCE_DATA, BLEU_GOLD_DATA, TRANSLATED_DEBIASED, TRANSLATED_NON_DEBIASED = get_evaluate_translation_files(args.config_str)
 
     evaluate_translation()
