@@ -1,17 +1,22 @@
 from sacrebleu.metrics import BLEU
-import pickle
 import sys
 sys.path.append("../../") # Adds higher directory to python modules path.
-from nematus.consts import get_evaluate_translation_files
+from debias_manager.consts import get_evaluate_translation_files, LANGUAGE_STR_MAP, parse_config, Language
+from nematus.detokenize import detokenize_matrix
 import argparse
-def evaluate_translation():
+def evaluate_translation(language):
     # refs = []
     with open(TRANSLATED_DEBIASED, 'r') as d, open(TRANSLATED_NON_DEBIASED, 'r') as nd, open(
             BLEU_GOLD_DATA, 'r') as g:
-        sys_debiased = d.readlines()
-        sys_non_debiased = nd.readlines()
-        refs = g.readlines()
-        # refs.append(pickle.load(nd))
+        debiased = d.readlines()
+        sys_debiased = detokenize_matrix(debiased, LANGUAGE_STR_MAP[Language(int(language))])
+        # sys_debiased = d.readlines()
+        non_debiased = nd.readlines()
+        sys_non_debiased = detokenize_matrix(non_debiased, LANGUAGE_STR_MAP[Language(int(language))])
+        # sys_non_debiased = nd.readlines()
+        gold = g.readlines()
+        refs = detokenize_matrix(gold, LANGUAGE_STR_MAP[Language(int(language))])
+        # refs = g.readlines()
     bleu = BLEU()
     print("debiased")
     print(bleu.corpus_score(sys_debiased, [refs]))
@@ -31,4 +36,4 @@ if __name__ == '__main__':
     args = parser.parse_args()
     BLEU_SOURCE_DATA, BLEU_GOLD_DATA, TRANSLATED_DEBIASED, TRANSLATED_NON_DEBIASED = get_evaluate_translation_files(args.config_str)
 
-    evaluate_translation()
+    evaluate_translation( parse_config(args.config_str)["LANGUAGE"])
