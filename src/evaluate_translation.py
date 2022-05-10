@@ -2,7 +2,7 @@ from sacrebleu.metrics import BLEU
 import sys
 sys.path.append("../../") # Adds higher directory to python modules path.
 from debias_manager.consts import get_evaluate_translation_files, LANGUAGE_STR_MAP, parse_config, Language
-from nematus.detokenize import detokenize_matrix
+from debias_manager.detokenize import detokenize_matrix
 import argparse
 def evaluate_translation(language):
     # refs = []
