@@ -13,9 +13,10 @@ dataset=$1
 lang=$2
 trans_sys=$3
 debias_method=$4
+model=$5
 prefix=en-$lang
-prefix_debiased=$prefix-debiased-$debias_method
-prefix_non_debiased=$prefix-non-debiased-$debias_method
+prefix_debiased=${prefix}-debiased-${debias_method}_${model}
+prefix_non_debiased=${prefix}-non-debiased-${debias_method}_${model}
 
 
 # Prepare files for translation
@@ -43,8 +44,8 @@ $FAST_ALIGN_BASE/build/fast_align -i $trans_fn_non_debiased -d -o -v > $align_fn
 
 # Evaluate
 mkdir -p ../data/human/$trans_sys/$lang/
-out_fn_debiased=../data/human/$trans_sys/$lang/${lang}-debiased.pred.csv
-out_fn_non_debiased=../data/human/$trans_sys/$lang/${lang}-non_debiased.pred.csv
+out_fn_debiased=../data/human/$trans_sys/$lang/${lang}-debiased_${debias_method}_${model}.pred.csv
+out_fn_non_debiased=../data/human/$trans_sys/$lang/${lang}-non_debiased_${debias_method}_${model}.pred.csv
 echo "output path: ${out_fn_debiased}"
 echo "python load_alignments.py --ds=$dataset  --bi=$trans_fn_debiased --align=$align_fn_debiased --lang=$lang --out=$out_fn_debiased"
 echo "python load_alignments.py --ds=$dataset  --bi=$trans_fn_non_debiased --align=$align_fn_non_debiased --lang=$lang --out=$out_fn_non_debiased"
