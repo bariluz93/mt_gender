@@ -81,7 +81,15 @@ def evaluate_bias(ds: List[str], predicted: List[GENDER]) -> Dict:
                    "unk_female": count_unknowns[GENDER.female],
                    "unk_neutral": count_unknowns[GENDER.neutral]}
     print(json.dumps(output_dict))
-
+    prof_accuracies = {}
+    for p in prof_dict.keys():
+        count = 0
+        for i in prof_dict[p]:
+            if i[0] == i[1]:
+                count += 1
+        prof_accuracies[p] = count / len(prof_dict[p])
+    print("professions accuracies")
+    print(json.dumps(prof_accuracies))
     male_prof = [prof for prof, vals in prof_dict.items()
                  if all(pred_gender == GENDER.male
                         for pred_gender
