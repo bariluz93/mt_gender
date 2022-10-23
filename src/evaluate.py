@@ -24,7 +24,7 @@ def calc_f1(precision: float, recall: float) -> float:
     return 2 * (precision * recall) / (precision + recall)
 
 
-def evaluate_bias(ds: List[str], predicted: List[GENDER]) -> Dict:
+def evaluate_bias(ds: List[str], predicted: List[GENDER],lang: str) -> Dict:
     """
     (language independent)
     Get performance metrics for gender bias.
@@ -88,7 +88,7 @@ def evaluate_bias(ds: List[str], predicted: List[GENDER]) -> Dict:
             if i[0] == i[1]:
                 count += 1
         prof_accuracies[p] = count / len(prof_dict[p])
-    print("professions accuracies")
+    print("*** prof_accuracies ***")
     print(json.dumps(prof_accuracies))
     male_prof = [prof for prof, vals in prof_dict.items()
                  if all(pred_gender == GENDER.male
