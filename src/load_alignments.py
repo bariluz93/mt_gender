@@ -43,6 +43,7 @@ LANGUAGE_PREDICTOR = {
 LANGUAGE_MATCH_PREDICTOR = {
     "de": lambda: ManualPredictor("de"),
     "he": lambda: ManualPredictor("he"),
+    "es": lambda: ManualPredictor("es"),
     "ru": lambda: ManualPredictor("ru")
 }
 
@@ -189,7 +190,9 @@ if __name__ == "__main__":
 
     target_sentences = [tgt_sent for (ind, (src_sent, tgt_sent)) in bitext]
     target_gender = [d[0] for d in ds]
-
+    #### todo delete when have spanish variants
+    if lang == 'es':
+        match=False
     if match:
         gender_predictor_matched = LANGUAGE_MATCH_PREDICTOR[lang]()
         gednder_word_predicted = [gender_predictor_matched.get_gender(prof, translated_sent, entity_index, ds_entry)

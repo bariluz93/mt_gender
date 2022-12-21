@@ -13,9 +13,10 @@ dataset=$1
 lang=$2
 trans_sys=$3
 debias_method=$4
+debias_loc=$5
 prefix=en-$lang
-prefix_debiased=${prefix}-debiased-${debias_method}_${trans_sys}
-prefix_non_debiased=${prefix}-non-debiased-${debias_method}_${trans_sys}
+prefix_debiased=${prefix}-debiased-${debias_method}_${trans_sys}${debias_loc}
+prefix_non_debiased=${prefix}-non-debiased-${debias_method}_${trans_sys}${debias_loc}
 
 
 # Prepare files for translation

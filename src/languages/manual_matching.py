@@ -14,9 +14,10 @@ from languages.util import GENDER, get_gender_from_token
 from languages.german import GermanPredictor
 from languages.semitic_languages import HebrewPredictor
 from languages.pymorph_support import PymorphPredictor
+from languages.spacy_support import SpacyPredictor
 import sys
 sys.path.append("../../..")
-from debias_files.consts import ANNOTATIONS_DATA_HOME
+from debias_files.consts import DATA_HOME
 
 
 # =-----
@@ -26,9 +27,10 @@ class ManualPredictor:
     Class for Manual matching German and Herbrew
     """
 
-    de_variants_fn = ANNOTATIONS_DATA_HOME+"de_variants.json"
-    he_variants_fn = ANNOTATIONS_DATA_HOME+"he_variants.json"
-    ru_variants_fn = ANNOTATIONS_DATA_HOME+"ru_variants.json"
+    de_variants_fn = DATA_HOME+"professions_annotations/"+"de_variants.json"
+    he_variants_fn = DATA_HOME+"professions_annotations/"+"he_variants.json"
+    ru_variants_fn = DATA_HOME+"professions_annotations/"+"ru_variants.json"
+    es_variants_fn = DATA_HOME+"professions_annotations/"+"es_variants.json"
 
     def __init__(self, lang):
         self.lang = lang
@@ -45,6 +47,10 @@ class ManualPredictor:
             self.automatic_predictor = PymorphPredictor("ru")
             with open(self.ru_variants_fn, 'r') as var_json:
                 self.variants = json.load(var_json)
+        elif self.lang == 'es':
+            with open(self.es_variants_fn, 'r') as var_json:
+                self.variants = json.load(var_json)
+            self.automatic_predictor = SpacyPredictor("es")
         else:
             raise ValueError(f"Unrecognized language {self.lang}, supported: de and he")
 
