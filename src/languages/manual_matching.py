@@ -3,21 +3,19 @@
 """
 # External imports
 import logging
-import pdb
 from docopt import docopt
-from collections import Counter
 import re
 import json
 
 # Local imports
-from languages.util import GENDER, get_gender_from_token
+from languages.util import GENDER
 from languages.german import GermanPredictor
 from languages.semitic_languages import HebrewPredictor
 from languages.pymorph_support import PymorphPredictor
 from languages.spacy_support import SpacyPredictor
 import sys
 sys.path.append("../../..")
-from debias_files.consts import DATA_HOME
+from debias_files.src.consts import DATA_HOME
 
 
 # =-----
