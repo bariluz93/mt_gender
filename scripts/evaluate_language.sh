@@ -13,9 +13,10 @@ dataset=$1
 lang=$2
 trans_sys=$3
 debias_method=$4
+debias_loc=$5
 prefix=en-$lang
-prefix_debiased=${prefix}-debiased-${debias_method}_${trans_sys}
-prefix_non_debiased=${prefix}-non-debiased-${debias_method}_${trans_sys}
+prefix_debiased=${prefix}-debiased-${debias_method}_${trans_sys}${debias_loc}
+prefix_non_debiased=${prefix}-non-debiased-${debias_method}_${trans_sys}${debias_loc}
 
 
 # Prepare files for translation
@@ -45,13 +46,11 @@ $FAST_ALIGN_BASE/build/fast_align -i $trans_fn_non_debiased -d -o -v > $align_fn
 mkdir -p ../data/human/$trans_sys/$lang/
 out_fn_debiased=../data/human/$trans_sys/$lang/${lang}-debiased_${debias_method}_${trans_sys}.pred.csv
 out_fn_non_debiased=../data/human/$trans_sys/$lang/${lang}-non_debiased_${debias_method}_${trans_sys}.pred.csv
-echo "output path: ${out_fn_debiased}"
-echo "python load_alignments.py --ds=$dataset  --bi=$trans_fn_debiased --align=$align_fn_debiased --lang=$lang --out=$out_fn_debiased"
-echo "python load_alignments.py --ds=$dataset  --bi=$trans_fn_non_debiased --align=$align_fn_non_debiased --lang=$lang --out=$out_fn_non_debiased"
 echo "********************debiased results********************"
-python load_alignments.py --ds=$dataset  --bi=$trans_fn_debiased --align=$align_fn_debiased --lang=$lang --out=$out_fn_debiased
+echo "python load_alignments.py --ds=${dataset}  --bi=${trans_fn_debiased} --align=${align_fn_debiased} --lang=${lang} --out=${out_fn_debiased} --match"
+python load_alignments.py --ds=$dataset  --bi=$trans_fn_debiased --align=$align_fn_debiased --lang=$lang --out=$out_fn_debiased --match
 echo "********************non debiased results********************"
-python load_alignments.py --ds=$dataset  --bi=$trans_fn_non_debiased --align=$align_fn_non_debiased --lang=$lang --out=$out_fn_non_debiased
+python load_alignments.py --ds=$dataset  --bi=$trans_fn_non_debiased --align=$align_fn_non_debiased --lang=$lang --out=$out_fn_non_debiased --match
 
 # Prepare files for human annots
 # human_fn=../data/human/$trans_sys/$lang/${lang}.in.csv
