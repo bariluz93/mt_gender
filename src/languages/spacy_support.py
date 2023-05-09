@@ -30,7 +30,10 @@ class SpacyPredictor:
         assert lang in ["es", "fr", "it"]
         self.lang = lang
         self.cache = {}    # Store calculated professions genders
-        self.nlp = spacy.load(self.lang, disable = ["parser", "ner"])
+        if self.lang == "es":
+            self.nlp = spacy.load("es_core_news_sm", disable = ["parser", "ner"])
+        else:
+            self.nlp = spacy.load(self.lang, disable = ["parser", "ner"])
 
     def get_gender(self, profession: str, translated_sent = None, entity_index = None, ds_entry = None) -> GENDER:
         """
