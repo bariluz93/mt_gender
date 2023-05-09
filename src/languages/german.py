@@ -42,7 +42,7 @@ class GermanPredictor:
         """
         self.lang = "de"
         self.cache = {}    # Store calculated professions genders
-        self.nlp = spacy.load("de", disable = ["parser", "ner"])
+        self.nlp = spacy.load("de_core_news_sm", disable = ["parser", "ner"])
 
     def get_gender(self, profession: str, translated_sent, entity_index, ds_entry) -> GENDER:
         """

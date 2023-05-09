@@ -14,7 +14,7 @@ from languages.semitic_languages import HebrewPredictor
 from languages.pymorph_support import PymorphPredictor
 from languages.spacy_support import SpacyPredictor
 import sys
-sys.path.append("../../..")
+sys.path.append("../../")
 from debias_files.src.consts import DATA_HOME
 
 
