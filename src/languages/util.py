@@ -71,8 +71,7 @@ def get_morphology_dict(token: Token) -> Dict:
     Parse a morphology dictionary from spacy token.
     @TODO: No better way to do this?
     """
-    print("token.tag_")
-    print(token.tag_)
+    # bar6
     if "__" not in token.tag_:
         raise AssertionError("No morphology support?")
 
@@ -101,6 +100,7 @@ def get_gender_from_token(token: Token):
     if "Gender" not in morph_dict:
         return None
 
+    # bar4
     morph_gender = SPACY_GENDER_TYPES[morph_dict["Gender"]]
     return morph_gender
 

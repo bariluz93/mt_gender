@@ -42,6 +42,7 @@ class SpacyPredictor:
         if translated_sent == "Il venditore ha parlato con l'insegnante e l'ha invitata a cena.":
             pass
         if profession not in self.cache:
+            # bar2
             self.cache[profession] = self._get_gender(profession)
 
         return self.cache[profession]
@@ -55,6 +56,7 @@ class SpacyPredictor:
             return GENDER.unknown
 
         toks = self.nlp(profession)
+        #bar2
         observed_genders = [gender for gender in map(get_gender_from_token, toks)
                             if gender is not None]
 

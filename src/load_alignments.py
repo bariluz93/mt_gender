@@ -172,7 +172,6 @@ if __name__ == "__main__":
     align_fn = args["--align"]
     out_fn = args["--out"]
     lang = args["--lang"]
-
     match = args['--match']
     debug = args["--debug"]
     if debug:
@@ -190,9 +189,14 @@ if __name__ == "__main__":
 
     target_sentences = [tgt_sent for (ind, (src_sent, tgt_sent)) in bitext]
     target_gender = [d[0] for d in ds]
-    #### todo delete when have spanish variants
-    if lang == 'es':
-        match=False
+
+    # split = ''
+    # if ds_fn.find('pro') != -1:
+    #     split = 'pro'
+    # elif ds_fn.find('anti') != -1:
+    #     split = 'anti'
+
+
     if match:
         gender_predictor_matched = LANGUAGE_MATCH_PREDICTOR[lang]()
         gednder_word_predicted = [gender_predictor_matched.get_gender(prof, translated_sent, entity_index, ds_entry)
@@ -201,13 +205,15 @@ if __name__ == "__main__":
                                               target_sentences,
                                               map(lambda ls: min(ls, default=-1), tgt_inds),
                                               ds))]
-        gender_predictions, word_matches = zip(*gednder_word_predicted)
+        gender_predictions, word_matches, match_ids = zip(*gednder_word_predicted)
 
-        # Output predictions
+        # if split == '':
+            # Output predictions
         output_predictions_with_matches(target_sentences, gender_predictions, target_gender, word_matches, out_fn)
 
     else:
         gender_predictor = LANGUAGE_PREDICTOR[lang]()
+        #bar1
         gender_predictions = [gender_predictor.get_gender(prof, translated_sent, entity_index, ds_entry)
                               for prof, translated_sent, entity_index, ds_entry
                               in tqdm(zip(translated_profs,
@@ -215,9 +221,11 @@ if __name__ == "__main__":
                                           map(lambda ls: min(ls, default=-1), tgt_inds),
                                           ds))]
 
-        # Output predictions
+        # if split == '':
+            # Output predictions
         output_predictions(target_sentences, gender_predictions, target_gender, out_fn)
+        match_ids = [None] * len(gender_predictions)
 
-    d = evaluate_bias(ds, gender_predictions, lang)
+    d = evaluate_bias(ds, gender_predictions,lang, match_ids)
 
     logging.info("DONE")
