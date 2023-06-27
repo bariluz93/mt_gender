@@ -24,7 +24,7 @@ def calc_f1(precision: float, recall: float) -> float:
     return 2 * (precision * recall) / (precision + recall)
 
 
-def evaluate_bias(ds: List[str], predicted: List[GENDER],lang: str) -> Dict:
+def evaluate_bias(ds: List[str], predicted: List[GENDER], lang: str, match_ids: List[int]) -> Dict:
     """
     (language independent)
     Get performance metrics for gender bias.
@@ -38,7 +38,7 @@ def evaluate_bias(ds: List[str], predicted: List[GENDER],lang: str) -> Dict:
 
     count_unknowns = defaultdict(lambda: 0)
 
-    for (gold_gender, word_ind, sent, profession), pred_gender in zip(ds, predicted):
+    for (gold_gender, word_ind, sent, profession), pred_gender, match_idx in zip(ds, predicted, match_ids):
         if pred_gender == GENDER.ignore:
             continue # skip analysis of ignored words
 
@@ -58,7 +58,8 @@ def evaluate_bias(ds: List[str], predicted: List[GENDER],lang: str) -> Dict:
             correct_cnt[gold_gender] += 1
 
         pred_cnt[pred_gender] += 1
-
+        if match_idx is not None:
+            prof_dict[f"{profession}-{match_idx}"].append((pred_gender, gold_gender))
         prof_dict[profession].append((pred_gender, gold_gender))
         conf_dict[gold_gender][pred_gender] += 1
 

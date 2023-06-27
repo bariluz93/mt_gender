@@ -18,7 +18,6 @@ prefix=en-$lang
 prefix_debiased=${prefix}-debiased-${debias_method}_${trans_sys}${debias_loc}
 prefix_non_debiased=${prefix}-non-debiased-${debias_method}_${trans_sys}${debias_loc}
 
-
 # Prepare files for translation
 #cut -f3 $dataset > ./tmp.in            # Extract sentences
 mkdir -p ../translations/$trans_sys/
@@ -44,8 +43,8 @@ $FAST_ALIGN_BASE/build/fast_align -i $trans_fn_non_debiased -d -o -v > $align_fn
 
 # Evaluate
 mkdir -p ../data/human/$trans_sys/$lang/
-out_fn_debiased=../data/human/$trans_sys/$lang/${lang}-debiased_${debias_method}_${trans_sys}.pred.csv
-out_fn_non_debiased=../data/human/$trans_sys/$lang/${lang}-non_debiased_${debias_method}_${trans_sys}.pred.csv
+out_fn_debiased=../data/human/$trans_sys/$lang/${lang}-debiased_${debias_method}_${trans_sys}${debias_loc}.pred.csv
+out_fn_non_debiased=../data/human/$trans_sys/$lang/${lang}-non_debiased_${debias_method}_${trans_sys}${debias_loc}.pred.csv
 echo "********************debiased results********************"
 echo "python load_alignments.py --ds=${dataset}  --bi=${trans_fn_debiased} --align=${align_fn_debiased} --lang=${lang} --out=${out_fn_debiased} --match"
 python load_alignments.py --ds=$dataset  --bi=$trans_fn_debiased --align=$align_fn_debiased --lang=$lang --out=$out_fn_debiased --match
