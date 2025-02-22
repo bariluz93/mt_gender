@@ -46,7 +46,9 @@ class HebrewPredictor:
         if not profession.strip():
             # Empty string is an error in alignment
             return GENDER.unknown
-
+        b=''.join([i for i in profession if i.isalpha()])
+        if len(b)<=1:
+            return GENDER.unknown
         toks = [w.text for w in self.tokenizer(profession)
                 if w.text != "את"]
 
